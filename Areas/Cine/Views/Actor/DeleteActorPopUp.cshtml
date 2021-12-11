@@ -1,0 +1,116 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{ ViewData["Title"] = "";
+    //
+    if (ViewBag.Actor != null)
+    {
+
+        // Get data from the station
+        ViewBag.Id = ViewBag.Actor["ActorID"];
+
+
+        ViewBag.ActorName = ViewBag.Actor["Actorname"];
+        ViewBag.ActorGender = ViewBag.Actor["ActorGender"];
+
+        //
+        ViewData["Title"] = $"Id: { ViewBag.Id } - { ViewBag.ActorName }, Gender: { ViewBag.ActorGender }";
+    } }
+
+
+<style>
+    form .row {
+        margin-bottom: 15px;
+    }
+
+    .small-font {
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    fieldset {
+        margin: 5px;
+        border: 1px solid #94b0bd;
+        padding: 0px 20px 0px 20px;
+        /*border-radius: 4px;*/
+        width: 99%
+    }
+
+    legend {
+        font-size: 14px;
+        padding: 5px;
+        width: 85px;
+        border-left-width: 10px;
+        margin-left: 10px;
+        color: #5b737d;
+    }
+</style>
+
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header" style="background-color:#dd420c; color:#ffffff">
+            <h5 class="modal-title">@ViewData["Title"]</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#ffffff">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form id="form1" asp-controller="Actor" asp-action="DeleteActor" role="form" method="post">
+                <input type="hidden" name="actorId" id="actorId" value="@ViewBag.Id" />
+
+                <h4>@ViewBag.Message</h4>
+                <div style="padding-top: 20px; text-align: center">
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        //Initialize Select2 Elements
+        $('.select2').select2()
+        //Initialize Select2 Elements
+        $('.select2bs4').select2({
+            theme: 'bootstrap4'
+        })
+        //Bootstrap Duallistbox
+        $('.duallistbox').bootstrapDualListbox()
+        //
+        $('#form1').submit(function (e) {
+            e.preventDefault();
+            var form = $(this);
+            $.post(form.attr('action'), form.serialize(), function (res) {
+                if (res.status === 'success') {
+                    // Show message
+                    toastr.success(res.message);
+                    // Hide window
+                    $('#ModalWindow').modal("hide");
+                    // Reload datatable
+                    //setTimeout(function () {
+                    //    dataList.ajax.reload();
+                    //}, 2000);
+                } else if (res.status === 'error') {
+                    toastr.error(res.message);
+                }
+            });
+        });
+    });</script>
+
+<!-- Select2 -->
+<link rel="stylesheet" href="~/plugins/select2/css/select2.min.css">
+<link rel="stylesheet" href="~/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+<!-- Bootstrap4 Duallistbox -->
+<link href="~/plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css" rel="stylesheet" />
+<link href="~/plugins/toastr/toastr.min.css" rel="stylesheet" />
+
+<!-- Bootstrap4 Duallistbox -->
+<script src="~/plugins/bootstrap4-duallistbox/jquery.bootstrap-duallistbox.min.js"></script>
+<!-- Select2 -->
+<script src="~/plugins/select2/js/select2.full.min.js"></script>
+<!-- Alert -->
+<script src="~/plugins/toastr/toastr.min.js"></script>

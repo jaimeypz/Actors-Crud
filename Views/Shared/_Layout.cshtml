@@ -1,0 +1,304 @@
+﻿@*@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager*@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>APP NET CORE - @ViewData["Title"]</title>
+    <!-- Font Awesome -->
+    <link href="~/plugins/fontawesome-free/css/all.min.css" rel="stylesheet" />
+    <!-- Ionicons -->
+    <link href="~/plugins/ionicons-2.0.1/css/ionicons.min.css" rel="stylesheet" />
+    <!-- Theme style -->
+    <link href="~/css/adminlte/adminlte.css" rel="stylesheet" />
+    <!-- Google Font: Source Sans Pro -->
+    <link href="~/css/sources-sans-pro.css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet" />
+    <!-- DataTables -->
+    <link href="~/plugins/datatables-bs4/css/dataTables.bootstrap4.css" rel="stylesheet" />
+    <link href="~/plugins/datatables-fixedheader/css/fixedHeader.bootstrap4.min.css" rel="stylesheet" />
+    <link href="~/plugins/datatables-responsive/css/responsive.bootstrap4.css" rel="stylesheet" />
+    <link href="~/plugins/datatables-select/css/select.bootstrap4.min.css" rel="stylesheet" />
+    <!-- Bootstrap-table  -->
+    <link href="~/plugins/bootstrap-table-master/bootstrap-table.css" rel="stylesheet" />
+    <link href="~/plugins/bootstrap-table-master/extensions/filter-control/bootstrap-table-filter-control.min.css" rel="stylesheet" />
+    <link href="~/plugins/bootstrap-table-master/extensions/fixed-columns/bootstrap-table-fixed-columns.css" rel="stylesheet" />
+    <!-- <link href="~/plugins/bootstrap-table-master/themes/semantic/bootstrap-table-semantic.css" rel="stylesheet" /> -->
+    <!-- Icons  -->
+    <link rel="icon" href="~/favicon.ico" type="image/ico" />
+    <link href="~/css/material-icons.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <style>
+        .active2 {
+            background: #494e53;
+        }
+    </style>
+
+    @RenderSection("CSS", required: false)
+</head>
+<body class="hold-transition sidebar-mini">
+    <div class="wrapper">
+        @*@if (SignInManager.IsSignedIn(User))
+            {*@
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a id="hambuguerMenu" class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Messages Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <partial name="_LoginPartial" />
+                </li>
+                <!-- Notifications Dropdown Menu -->
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a class="brand-link" asp-area="" asp-controller="Home" asp-action="Index" style="margin-left:20px">
+                <i class="fas fa-1x fa-passport"></i>
+                <span class="brand-text font-weight-bold">
+                    LTM
+                </span>
+            </a>
+
+            <!-- Sidebar -->
+            <div id="sidebar" class="sidebar">
+                <!-- Sidebar user (optional) -->
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" class="d-block">@Context.User.Identity.Name</a>
+                    </div>
+                </div>
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-header">EXAMPLES</li>
+                        <li class="nav-item">
+                            <a asp-area="Cine" asp-controller="Actor" asp-action="Index" class="nav-link">
+                                <i class="nav-icon fas fa-user-circle"></i>
+                                <p>
+                                    Actors
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/calendar.html" class="nav-link">
+                                <i class="nav-icon far fa-calendar-alt"></i>
+                                <p>
+                                    Calendar
+                                    <span class="badge badge-info right">2</span>
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/gallery.html" class="nav-link">
+                                <i class="nav-icon far fa-image"></i>
+                                <p>
+                                    Gallery
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="pages/kanban.html" class="nav-link">
+                                <i class="nav-icon fas fa-columns"></i>
+                                <p>
+                                    Kanban Board
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-block">
+                <b>Version</b> 1.0.0
+            </div>
+            <strong>Copyright &copy; 2020-2022 <a href="#">CINE</a>.</strong> All rights
+            reserved.
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+        @*}
+            else
+            {
+                <div>
+                    @RenderBody()
+                </div>
+            }*@
+    </div>
+
+    <!-- Vanilla-->
+    <script src="~/js/vanilla.js"></script>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap-Tables -->
+    <script src="~/plugins/bootstrap-table-master/bootstrap-table.min.js"></script>
+    <script src="~/plugins/bootstrap-table-master/extensions/toolbar/bootstrap-table-toolbar.js"></script>
+    <script src="~/plugins/bootstrap-table-master/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
+    <script src="~/plugins/bootstrap-table-master/extensions/fixed-columns/bootstrap-table-fixed-columns.min.js"></script>
+    <script src="~/plugins/bootstrap-table-master/extensions/cookie/bootstrap-table-cookie.min.js"></script>
+    <!-- DataTables -->
+    <script src="~/plugins/datatables/jquery.dataTables.js"></script>
+    <script src="~/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+    <script src="~/plugins/datatables-responsive/js/dataTables.responsive.js"></script>
+    <script src="~/plugins/datatables-responsive/js/responsive.bootstrap4.js"></script>
+    <script src="~/plugins/datatables-fixedheader/js/fixedHeader.bootstrap4.min.js"></script>
+    <!-- Signalr-->
+    <script src="~/js/signalr/dist/browser/signalr.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/js/adminlte.min.js"></script>
+    <!-- Site-->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Menu-->
+    @*<script src="~/js/menu.js"></script>*@
+    @RenderSection("Scripts", required: false)
+
+    <script>
+        function ready(callbackFunc) {
+            if (document.readyState !== 'loading') {
+                // Document is already ready, call the callback directly
+                callbackFunc();
+            } else if (document.addEventListener) {
+                // All modern browsers to register DOMContentLoaded
+                document.addEventListener('DOMContentLoaded', callbackFunc);
+            } else {
+                // Old IE browsers
+                document.attachEvent('onreadystatechange', function () {
+                    if (document.readyState === 'complete') {
+                        callbackFunc();
+                    }
+                });
+            }
+        }
+
+        //
+        ready(function () {
+            //
+            let ul = document.createElement("ul");
+            ul.className = "nav nav-pills nav-sidebar flex-column";
+            ul.dataset.widget = "treeview";
+            ul.dataset.accordion = "false";
+
+            let nav2 = document.createElement("nav");
+            nav2.className = 'class="mt-2"';
+            nav2.appendChild(ul);
+
+            let principalMenu = document.querySelector('#sidebar');
+            if (principalMenu != null) {
+                let menu;
+                /*****/
+                $.getJSON("@Url.Action("MenuJson", "Menu", new { Area = ""})", function (data) {
+                    menu = data
+                        //$.each(data, function (key, val) {
+                        //    //
+                        //    console.log(val);
+                        //});
+                }).done(function () {
+                    for (let i in menu) {
+                        console.log(menu[i]);
+                        let result = createNode(menu[i], 1);
+                        ul.appendChild(result.listItem);
+                    }
+                    //principalMenu.appendChild(nav2);
+                });
+                //for (let i in menu) {
+                //    console.log(menu[i]);
+                //    let result = createNode(menu[i], 1);
+                //    ul.appendChild(result.listItem);
+                //}
+                principalMenu.appendChild(nav2);
+            }
+
+            // Create menu
+            function createNode(menu, level) {
+                //
+                const urlPage = window.location.href;
+                const strings = urlPage.split("/");
+                const url = strings[0] + "//" + strings[2] + "/" + menu.href;
+                //
+                let localLevel = level + 1;
+                //
+                let isSelected = false;
+                let paragraph = document.createElement("p");
+                paragraph.innerHTML = menu.option;
+                //
+                let italic = document.createElement("i");
+                italic.className = menu.class;
+                //
+                let link = document.createElement("a");
+                link.className = "nav-link";
+                //
+                if (urlPage.indexOf(menu.href) > 0) {
+                    link.className += (level <= 2) ? " active" : " active2";
+                    isSelected = true;
+                }
+                const finalUrl = menu.href.localeCompare("#") === 0 ? menu.href : url;
+                link.href = finalUrl;
+                //
+                link.appendChild(italic);
+                link.appendChild(paragraph);
+                //
+                let listItem = document.createElement("li");
+                listItem.className = "nav-item";
+                listItem.appendChild(link);
+                //
+                if (menu.children.length > 0) {
+                    // Add angle
+                    let italicAngle = document.createElement("i");
+                    italicAngle.className = "right fas fa-angle-left";
+                    // Add angle to paragrahp
+                    paragraph.appendChild(italicAngle);
+                    //
+                    let unorderedList = document.createElement("ul");
+                    unorderedList.className = "nav nav-treeview";
+                    // Add class
+                    listItem.className += " has-treeview";
+                    listItem.appendChild(unorderedList);
+                    // Create ul
+                    for (let i in menu.children) {
+                        let result = createNode(menu.children[i], localLevel);
+                        unorderedList.appendChild(result.listItem);
+                        if (result.isSelected) {
+                            link.className += (level <= 2) ? " active" : " active2";
+                            listItem.className += " menu-open";
+                            isSelected = result.isSelected;
+                        }
+                    }
+                }
+                return { listItem, isSelected };
+            }
+        });
+    </script>
+</body>
+</html>

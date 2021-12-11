@@ -1,0 +1,184 @@
+﻿@{
+    ViewData["Title"] = "Actor";
+}
+
+    <style>
+
+        td {
+            padding-bottom: 5px !important;
+            padding-top: 5px !important;
+        }
+
+        .card-padding {
+            padding: 5px 5px 5px 5px !important;
+        }
+    </style>
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-3">
+                <div class="input-group-append">
+                    <h1 style="font:bold">@ViewData["Title"]</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="card">
+        <div class="card-body card-padding">
+            <div class="table-responsive">
+                <div id="toolbar">
+                    @*<button id="btnImport" type="button" class="btn btn-primary btn-sm float-sm-right button-refresh" style="width:90px;border-radius: 0 !important;">
+                            <i class="fa fa-info-circle" aria-hidden="true" style="padding-right:5px"></i>
+                            Import
+                        </button>*@
+                    <button id="btnDetails" type="button" class="btn btn-danger btn-sm float-sm-right button-refresh" style="width:90px;border-radius: 0 !important;">
+                        <i class="fa fa-info-circle" aria-hidden="true" style="padding-right:5px"></i>
+                        Details
+                    </button>
+                    <button id="btnDelete" type="button" class="btn btn-danger btn-sm float-sm-right button-refresh" style="width:90px;border-radius: 0 !important;">
+                        <i class="fa fa-trash-alt" aria-hidden="true" style="padding-right:5px"></i>
+                        Delete
+                    </button>
+                    <button id="btnUpdate" type="button" class="btn btn-danger btn-sm float-sm-right button-refresh" style="width:90px;border-radius: 0 !important;">
+                        <i class="fa fa-edit" aria-hidden="true" style="padding-right:5px"></i>
+                        Update
+                    </button>
+                    <button id="btnNew" type="button" class="btn btn-danger btn-sm float-sm-right button-refresh" style="width:90px;border-radius: 0 !important;">
+                        <i class="fa fa-plus-circle" aria-hidden="true" style="padding-right:5px"></i>
+                        New
+                    </button>
+                </div>
+                <table id="dataList" class="table table-striped display dt-responsive table-bordered nowrap" width="100%"
+                       data-toggle="table"
+                       data-pagination="true"
+                       data-show-columns="true"
+                       data-show-pagination-switch="true"
+                       data-show-refresh="true"
+                       data-key-events="true"
+                       data-show-toggle="true"
+                       data-resizable="true"
+                       data-show-export="true"
+                       data-toolbar="#toolbar"
+                       data-click-to-select="true"
+                       data-single-select="true"
+                       data-page-list="[15, 20, 25, 50, 100, 200, All]"
+                       data-page-size="20"
+                       data-search="true"
+                       data-advanced-search="true"
+                       data-id-table="advancedTable"
+                       data-cookie="true"
+                       data-cookie-id-table="ActorPrincipalTable"
+                       data-filter-control="true"
+                       data-show-search-clear-button="true"
+                       data-url="@Url.Action("ActorsJson", "Actor", new { Area = "Cine"})">
+                    <thead>
+                        <tr>
+                            <th data-checkbox="true"></th>
+                            <th data-field="ActorID" data-sortable="true" data-filter-control="input">ActorID</th>
+                            <th data-field="ActorName" data-sortable="true" data-filter-control="input">Name</th>
+                            <th data-field="ActorDOB" data-sortable="true" data-filter-control="input">Date</th>
+                            <th data-field="ActorGender" data-sortable="true" data-filter-control="input">Gender</th>
+                          
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade" id="ModalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+</div>
+
+@section Scripts
+{
+    <script>
+        var dataList = $('#dataList');
+
+        // Move dialog
+        $("#ModalWindow").draggable({
+            handle: ".modal-header"
+        });
+
+        //
+        let connection = new signalR.HubConnectionBuilder().withUrl(systemHubUrl()).build();
+        connection.start();
+        //
+        connection.on("RefreshActors", function () {
+            //
+            waitTime(function () {
+                dataList.bootstrapTable('refreshOptions', {
+                    url: "@Url.Action("ActorsJson", "Actor", new { Area = "Cine"})"
+                });
+            });
+        });
+
+        // Document
+        $(document).ready(function () {
+            dataList.bootstrapTable();
+            dataList.bootstrapTable('refreshOptions', {
+                iconSize: "sm"
+            });
+            dataList.on('load-success.bs.table', function (status, data, jqXHR, ) {
+                if (data.length > 0) {
+                    dataList.bootstrapTable('check', 0)
+                }
+            })
+            // New model
+            $('#btnNew').click(function () {
+                showWindowPopUp("@Url.Action("ActorPopUp", "Actor" )");
+            });
+
+                @*// New model
+            $('#btnImport').click(function () {
+                showWindowPopUp("@Url.Action("ImportReworkPopUp", "Rework")");
+            });*@
+
+
+            // Update model
+            $('#btnUpdate').click(function () {
+                var id = getSelectedId();
+                if (id != null) {
+                    showWindowPopUp("@Url.Action("ActorPopUp", "Actor")" + "?actorId=" + id);
+                }
+            });
+            // Delete model
+            $('#btnDelete').click(function () {
+                var id = getSelectedId();
+                if (id != null) {
+                    showWindowPopUp("@Url.Action("DeleteActorPopUp", "Actor")" + "?actorId=" + id);
+                }
+            });
+            // Details model
+            $('#btnDetails').click(function () {
+                var id = getSelectedId();
+                if (id != null) {
+                    window.location.href = "@Url.Action("Details", "Actor")" + "?ReworkId=" + id;
+                }
+            });
+        });
+        //
+        function getSelectedId() {
+            var id = null;
+            var json = dataList.bootstrapTable('getSelections');
+            if (json.length > 0) {
+                id = json[0].ActorID
+            }
+            return id;
+        }
+        //
+        function showWindowPopUp(url) {
+            $.get(url, function (data) {
+                $('#ModalWindow').html(data);
+                $('#ModalWindow').modal({ backdrop: 'static', keyboard: false });
+            });
+        }
+    </script>
+}
